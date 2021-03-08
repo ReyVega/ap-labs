@@ -276,7 +276,8 @@ void analizeLog(char *logFile, char *report)
         // Managing string for not upgraded packages
         else
         {
-            strcat(packagesNotUpgraded, strcat(pk[i].name, ", "));
+            strcat(packagesNotUpgraded, pk[i].name);
+            strcat(packagesNotUpgraded, ", ");
             k++;
             if (k == 20)
             {
