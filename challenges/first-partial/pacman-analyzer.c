@@ -161,12 +161,31 @@ void analizeLog(char *logFile, char *report)
         // Install new package; initialize new struct within the array of packages
         if (strcmp(action, "installed") == 0)
         {
-            strcpy(pk[indexPackage].name, pName);
-            strcpy(pk[indexPackage].installDate, date);
-            strcpy(pk[indexPackage].lastUpdate, "-");
-            pk[indexPackage].updates = 0;
-            strcpy(pk[indexPackage].removalDate, "-");
-            indexPackage++;
+            bool flag = true;
+            // Validate if package is installed because there are duplicates
+            // I considered duplicates as reinstalled packages
+            for (int i = 0; i < indexPackage; i++)
+            {
+                if (strcmp(pk[i].name, pName) == 0)
+                {
+                    strcpy(pk[i].installDate, date);
+                    strcpy(pk[i].lastUpdate, "-");
+                    pk[i].updates = 0;
+                    strcpy(pk[i].removalDate, "-");
+                    flag = false;
+                    break;
+                }
+            }
+
+            if (flag)
+            {
+                strcpy(pk[indexPackage].name, pName);
+                strcpy(pk[indexPackage].installDate, date);
+                strcpy(pk[indexPackage].lastUpdate, "-");
+                pk[indexPackage].updates = 0;
+                strcpy(pk[indexPackage].removalDate, "-");
+                indexPackage++;
+            }
         }
         // Upgraded packages; look for the package, increase update variable and change latest update date
         else if (strcmp(action, "upgraded") == 0)
@@ -181,7 +200,7 @@ void analizeLog(char *logFile, char *report)
                 }
             }
         }
-        // Reinstalled packages; look for the package and reset all his values to default, 
+        // Reinstalled packages; look for the package and reset all his values to default,
         // of course package will have now a newest date of installation
         else if (strcmp(action, "reinstalled") == 0)
         {
@@ -201,7 +220,7 @@ void analizeLog(char *logFile, char *report)
             // If package was not found I considered it as a new installation
             // Note: this happens a lot in pacman2.txt file
             // Packages reinstalled without having history that they have been
-            // previously installed 
+            // previously installed
             if (flag)
             {
                 strcpy(pk[indexPackage].name, pName);
