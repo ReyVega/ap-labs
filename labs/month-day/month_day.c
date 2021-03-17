@@ -24,6 +24,12 @@ void month_day(int year, int yearday, int *pmonth, int *pday)
     int leap = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
     *pday = yearday;
 
+    if ((leap == 0 && yearday > 365) || (leap == 1 && yearday > 366))
+    {
+        printf("Invalid yearday\n");
+        exit(0);
+    }
+
     for (int i = 1; i < 13; i++)
     {
         *pmonth = i;
@@ -41,12 +47,6 @@ int main(int argc, char **argv)
         yearday = atoi(argv[2]),
         pmonth = 0,
         pday = 0;
-
-    if (yearday > 366)
-    {
-        printf("Invalid yearday\n");
-        return 0;
-    }
 
     month_day(year, yearday, &pmonth, &pday);
     printf("%s %d, %d\n", month_name(pmonth), pday, year);
