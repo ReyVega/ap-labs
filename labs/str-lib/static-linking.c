@@ -2,8 +2,8 @@
 #include <string.h>
 
 extern int mystrlen(char *);
-char *mystradd(char *, char *);
-int mystrfind(char *, char *);
+extern char *mystradd(char *, char *);
+extern int mystrfind(char *, char *);
 
 int main(int argc, char *argv[]) {
     
