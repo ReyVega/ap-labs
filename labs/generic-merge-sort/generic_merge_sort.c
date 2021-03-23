@@ -161,5 +161,6 @@ int main(int argc, char *argv[])
 
     writelines(output, nlines);
     fclose(output);
+    printf("Results file can be found at ./%s\n", name_output);
     return 0;
 }
