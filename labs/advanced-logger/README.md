@@ -33,6 +33,14 @@ Build and Test automation is already implemented with the following command. Bel
 - Failed compilation or segmentation faults means 0-graded.
 - Failed tests without proper handling  will be properly discounted from total grade.
 
+Building and running code
+-------------------------
+- gcc -c testLogger.c -o testLogger.o
+- gcc -c logger.c -o logger.o
+- gcc testLogger.o logger.o -o main.o
+- ./main.o
+- To run the program easily just use "make test"
+
 ```
 make test
 ```
