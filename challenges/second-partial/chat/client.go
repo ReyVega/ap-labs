@@ -7,6 +7,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"io"
 	"log"
 	"net"
@@ -15,15 +17,31 @@ import (
 
 //!+
 func main() {
-	conn, err := net.Dial("tcp", "localhost:8000")
+	// Validations of cmd
+	args := os.Args[0:]
+
+	if len(args) != 5 {
+		fmt.Println("Usage: go run client.go -user <name> -server localhost:<port>")
+		return
+	}
+
+	if args[1] != "-user" || args[3] != "-server" {
+		fmt.Println("Usage: go run client.go -user <name> -server localhost:<port>")
+		return
+	}
+
+	conn, err := net.Dial("tcp", args[4])
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	username := flag.String("username", os.Args[2], "username")
+	fmt.Fprintf(conn, *username)
+
 	done := make(chan struct{})
 	go func() {
 		io.Copy(os.Stdout, conn) // NOTE: ignoring errors
-		log.Println("done")
-		done <- struct{}{} // signal the main goroutine
+		done <- struct{}{}       // signal the main goroutine
 	}()
 	mustCopy(conn, os.Stdin)
 	conn.Close()
